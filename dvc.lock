@@ -1,0 +1,47 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/RetinoNet/pipeline/stage_01_data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 0ea23f1b4ac03fc83fe49d82a89ac2ee
+      size: 482
+    - path: src/RetinoNet/pipeline/stage_01_data_ingestion.py
+      hash: md5
+      md5: fcf2e3dfd96d251e08dfa49368be5194
+      size: 980
+    outs:
+    - path: artifacts/data_ingestion
+      hash: md5
+      md5: 6012d4f81c1e0ae78c0b0e853bb1a0b6.dir
+      size: 266000424
+      nfiles: 1986
+  prepare_base_model:
+    cmd: python src/RetinoNet/pipeline/stage_02_prepare_base_model.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: 0ea23f1b4ac03fc83fe49d82a89ac2ee
+      size: 482
+    - path: src/RetinoNet/pipeline/stage_02_prepare_base_model.py
+      hash: md5
+      md5: 16cbe61151b12cbb89611d8446125ae2
+      size: 1028
+    params:
+      params.yaml:
+        CLASSES: 5
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        INCLUDE_TOP: false
+        LEARNING_RATE: 0.0001
+        MODEL_NAME: MobileNetV2
+        WEIGHTS: imagenet
+    outs:
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: 6c9f5944ba640a8eddee6e93cb8cbe90.dir
+      size: 22196296
+      nfiles: 2
