@@ -1,0 +1,23 @@
+stages:
+  data_ingestion:
+    cmd: python src/RetinoNet/pipeline/stage_01_data_ingestion.py
+    deps:
+      - src/RetinoNet/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion
+
+  prepare_base_model:
+    cmd: python src/RetinoNet/pipeline/stage_02_prepare_base_model.py
+    deps:
+      - src/RetinoNet/pipeline/stage_02_prepare_base_model.py
+      - config/config.yaml
+    params:
+      - MODEL_NAME
+      - IMAGE_SIZE
+      - INCLUDE_TOP
+      - CLASSES
+      - LEARNING_RATE
+      - WEIGHTS
+    outs:
+      - artifacts/prepare_base_model
