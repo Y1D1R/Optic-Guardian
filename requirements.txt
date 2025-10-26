@@ -10,7 +10,7 @@ tqdm==4.66.5
 matplotlib==3.7.5
 seaborn==0.13.2
 notebook==6.5.7
-pywinpty==2.0.10
+pywinpty==2.0.10; sys_platform == "win32"
 
 # ==== Config & utils ====
 python-box==6.0.2
