@@ -21,3 +21,19 @@ stages:
       - WEIGHTS
     outs:
       - artifacts/prepare_base_model
+
+  model_training:
+    cmd: python src/RetinoNet/pipeline/stage_03_model_training.py
+    deps:
+      - src/RetinoNet/pipeline/stage_03_model_training.py
+      - config/config.yaml
+      - artifacts/prepare_base_model
+      - artifacts/data_ingestion
+    params:
+      - MODEL_NAME
+      - IMAGE_SIZE
+      - EPOCHS
+      - BATCH_SIZE
+      - AUGMENTATION
+    outs:
+      - artifacts/model_training/model.h5
