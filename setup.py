@@ -1,5 +1,7 @@
-import pathlib
-from setuptools import setup, find_packages
+# setup
+
+from pathlib import Path
+from setuptools import setup, find_packages # type: ignore
 
 # --- Metadata ---
 PACKAGE_NAME = "RetinoNet"
@@ -8,7 +10,7 @@ AUTHOR = "Y1D1R"
 REPO_URL = "https://github.com/Y1D1R/Optic-Guardian.git"
 DESCRIPTION = "Optic-Guardian est un projet de Deep Learning end-to-end dédié à la détection automatisée de la rétinopathie diabétique à partir d'images du fond d'œil."
 
-README = pathlib.Path("README.md").read_text(encoding="utf-8")
+README = Path("README.md").read_text(encoding="utf-8")
 
 setup(
     name=PACKAGE_NAME,
