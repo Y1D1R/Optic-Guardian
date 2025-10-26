@@ -5,12 +5,12 @@ stages:
     deps:
     - path: config/config.yaml
       hash: md5
-      md5: 0ea23f1b4ac03fc83fe49d82a89ac2ee
-      size: 482
+      md5: 0f22a8e93f653395f0eb08aedd6a2da4
+      size: 580
     - path: src/RetinoNet/pipeline/stage_01_data_ingestion.py
       hash: md5
-      md5: fcf2e3dfd96d251e08dfa49368be5194
-      size: 980
+      md5: 1d0852ceb337fe453e576aedbeae67f9
+      size: 952
     outs:
     - path: artifacts/data_ingestion
       hash: md5
@@ -22,12 +22,12 @@ stages:
     deps:
     - path: config/config.yaml
       hash: md5
-      md5: 0ea23f1b4ac03fc83fe49d82a89ac2ee
-      size: 482
+      md5: 0f22a8e93f653395f0eb08aedd6a2da4
+      size: 580
     - path: src/RetinoNet/pipeline/stage_02_prepare_base_model.py
       hash: md5
-      md5: 16cbe61151b12cbb89611d8446125ae2
-      size: 1028
+      md5: d6d4179e8953805a617cd3e006b64b28
+      size: 1001
     params:
       params.yaml:
         CLASSES: 5
@@ -42,6 +42,42 @@ stages:
     outs:
     - path: artifacts/prepare_base_model
       hash: md5
-      md5: 6c9f5944ba640a8eddee6e93cb8cbe90.dir
+      md5: de4abf3b8407cde39adf51520b09efe0.dir
       size: 22196296
       nfiles: 2
+  model_training:
+    cmd: python src/RetinoNet/pipeline/stage_03_model_training.py
+    deps:
+    - path: artifacts/data_ingestion
+      hash: md5
+      md5: 6012d4f81c1e0ae78c0b0e853bb1a0b6.dir
+      size: 266000424
+      nfiles: 1986
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: de4abf3b8407cde39adf51520b09efe0.dir
+      size: 22196296
+      nfiles: 2
+    - path: config/config.yaml
+      hash: md5
+      md5: 0f22a8e93f653395f0eb08aedd6a2da4
+      size: 580
+    - path: src/RetinoNet/pipeline/stage_03_model_training.py
+      hash: md5
+      md5: 433be2a4a25f5d2e67358d774e207915
+      size: 4207
+    params:
+      params.yaml:
+        AUGMENTATION: true
+        BATCH_SIZE: 128
+        EPOCHS: 50
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        MODEL_NAME: MobileNetV2
+    outs:
+    - path: artifacts/model_training/model.h5
+      hash: md5
+      md5: a3348be777cbe90be5a3e220bed690d1
+      size: 12693688
