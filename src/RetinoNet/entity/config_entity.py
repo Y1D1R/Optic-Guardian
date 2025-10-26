@@ -34,4 +34,5 @@ class ModelTrainingConfig:
     params_image_size: list
     params_learning_rate: float
     artifacts_dir: str
+    resume_from_checkpoint: bool
     

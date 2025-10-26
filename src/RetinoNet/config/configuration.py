@@ -89,7 +89,8 @@ class ConfigurationManager:
             params_image_size=params.IMAGE_SIZE,
             params_learning_rate=params.LEARNING_RATE,
             model_name=params.MODEL_NAME,
-            artifacts_dir=params.ARTIFACTS_DIR
+            artifacts_dir=params.ARTIFACTS_DIR,
+            resume_from_checkpoint = bool(params.RESUME_TRAINING)
         )
 
         return model_training_config
