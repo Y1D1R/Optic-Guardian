@@ -21,7 +21,7 @@ class PrepareBaseModelConfig:
     params_weights: str
     params_classes: int
 
-@dataclass(frozen=True )
+@dataclass(frozen=True)
 class ModelTrainingConfig:
     root_dir: Path
     model_name: str
@@ -33,6 +33,10 @@ class ModelTrainingConfig:
     params_is_augmentation: bool
     params_image_size: list
     params_learning_rate: float
-    artifacts_dir: str
-    resume_from_checkpoint: bool
+    artifacts_dir: str = "artifacts"
+    resume_from_checkpoint: bool = False
+    use_weighted_augmentation: bool = False
+    weighted_augmentation_base_prob: float = 0.3
+    use_class_weight: bool = True
+
     
