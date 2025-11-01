@@ -6,7 +6,7 @@ from RetinoNet.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from RetinoNet.utils.common import read_yaml, create_directories
 from RetinoNet.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig, ModelTrainingConfig
 from RetinoNet import logger
-from dotenv import load_dotenv
+from dotenv import load_dotenv # type: ignore
 
 log = logger.getChild(__name__)
 load_dotenv() 
@@ -72,25 +72,33 @@ class ConfigurationManager:
         params = self.params
         training_data = Path(self.config.data_ingestion.unzip_dir)
 
-    
         create_directories([
             Path(model_training.root_dir),
             Path(model_training.trained_model_path).parent,
         ])
-        
+
+        # safe reads from params with defaults
+        use_weighted_augmentation = bool(params.get("USE_WEIGHTED_AUGMENTATION", False))
+        weighted_augmentation_base_prob = float(params.get("WEIGHTED_AUGMENTATION_BASE_PROB", 0.3))
+        resume_from_checkpoint = bool(params.get("RESUME_TRAINING", False))
+        use_class_weight = bool(params.get("USE_CLASS_WEIGHT", True))
+
         model_training_config = ModelTrainingConfig(
             root_dir=Path(model_training.root_dir),
             trained_model_path=Path(model_training.trained_model_path),
             updated_base_model_path=Path(prepare_base_model_config.updated_base_model_path),
             training_data=Path(training_data),
-            params_epochs=params.EPOCHS,
-            params_batch_size=params.BATCH_SIZE,
-            params_is_augmentation=params.AUGMENTATION,
-            params_image_size=params.IMAGE_SIZE,
-            params_learning_rate=params.LEARNING_RATE,
-            model_name=params.MODEL_NAME,
-            artifacts_dir=params.ARTIFACTS_DIR,
-            resume_from_checkpoint = bool(params.RESUME_TRAINING)
+            params_epochs=params.get("EPOCHS", 10),
+            params_batch_size=params.get("BATCH_SIZE", 32),
+            params_is_augmentation=params.get("AUGMENTATION", False),
+            params_image_size=params.get("IMAGE_SIZE", [224, 224, 3]),
+            params_learning_rate=params.get("LEARNING_RATE", 1e-4),
+            model_name=params.get("MODEL_NAME", "MobileNetV2"),
+            artifacts_dir=params.get("ARTIFACTS_DIR", "artifacts"),
+            resume_from_checkpoint=resume_from_checkpoint,
+            use_weighted_augmentation=use_weighted_augmentation,
+            weighted_augmentation_base_prob=weighted_augmentation_base_prob,
+            use_class_weight=use_class_weight
         )
 
         return model_training_config
